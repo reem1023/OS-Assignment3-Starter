@@ -14,9 +14,9 @@ Date Submitted: 27 April 2026
 > Set sharing to "Anyone with the link can view".
 > Test the link in incognito/private mode before submitting.
 
-**Video Link**: [Paste your personal Gmail Google Drive link here]
+**Video Link**: [reem.raf7@icloud.com]
 
-**Video filename**: `[YourStudentID]_Assignment3_Synchronization.mp4`
+**Video filename**: `[[YourStudentID]_Assignment3_Synchronization.mp4](https://drive.google.com/file/d/1qxuJN3PfomFbUeVsS9NIlZasFTkEXero/view?usp=drivesdk)`
 
 **Verification**:
 - [ ] Link is accessible (tested in incognito mode)
