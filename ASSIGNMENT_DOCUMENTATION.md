@@ -1,8 +1,8 @@
 # Assignment 3 - Complete Documentation
 
-**Student Name**: [Your Full Name]  
-**Student ID**: [Your ID]  
-**Date Submitted**: [Submission Date]
+Student Name: ريم العنزي
+Student ID: 443051761
+Date Submitted: 27 April 2026
 
 ---
 
@@ -32,11 +32,11 @@
 Document your development process with **minimum 3 entries** showing progression:
 
 ### Entry 1 - [Date, Time]
-**What I implemented**: 
+**What I implemented**: Added ReentrantLock and Semaphore imports
 
 **Challenges encountered**: 
 
-**How I solved it**: 
+**How I solved it**: Reviewed TODO comments
 
 **Testing approach**: 
 
@@ -45,11 +45,11 @@ Document your development process with **minimum 3 entries** showing progression
 ---
 
 ### Entry 2 - [Date, Time]
-**What I implemented**: 
+**What I implemented**: Added locks for shared counters.
 
 **Challenges encountered**: 
 
-**How I solved it**: 
+**How I solved it**: Used one shared lock.
 
 **Testing approach**: 
 
@@ -58,37 +58,37 @@ Document your development process with **minimum 3 entries** showing progression
 ---
 
 ### Entry 3 - [Date, Time]
-**What I implemented**: 
+**What I implemented**: Added lock for execution log.
 
 **Challenges encountered**: 
 
-**How I solved it**: 
+**How I solved it**: Used separate log lock.
 
-**Testing approach**: 
+**Testing approach**: Checked add method.
 
 **Time spent**: 
 
 ---
 
 ### Entry 4 - [Date, Time]
-**What I implemented**: 
+**What I implemented**: Added CPU semaphore.
 
 **Challenges encountered**: 
 
-**How I solved it**: 
+**How I solved it**: Added try/finally.
 
-**Testing approach**: 
+**Testing approach**: Code tracing.
 
 **Time spent**: 
 
 ---
 
 ### Entry 5 - [Date, Time]
-**What I implemented**: 
+**What I implemented**: Final review.
 
 **Challenges encountered**: 
 
-**How I solved it**: 
+**How I solved it**: Fixed formatting.
 
 **Testing approach**: 
 
@@ -106,7 +106,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - 4-6 sentences with code examples]
+[Two race conditions were counter variables and executionLog. Multiple threads may update counters at the same time causing lost updates. Also multiple threads may write to ArrayList simultaneously causing corruption or exceptions. Locks solve this issue.]
 
 ---
 
@@ -115,7 +115,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain your implementation choices]
+[ReentrantLock gives mutual exclusion to one thread at a time. Semaphore controls access count to resources. I used locks for counters and logs, and semaphore for CPU access because only one process should run at once.]
 
 ---
 
@@ -124,7 +124,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - reference try-finally blocks, lock ordering, etc.]
+[Deadlock is when threads wait forever for resources. Prevention methods are releasing locks in finally block and keeping lock usage simple. I used try-finally so locks always release.]
 
 ---
 
@@ -137,7 +137,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain coarse-grained vs fine-grained locking, independence of counters, concurrency implications. Show understanding of when to use each approach. 5-8 sentences expected.]
+[I used one lock for all counters. It is easier and safer to manage. Separate locks may improve concurrency but increase complexity. Since counters are simple shared values, one lock was enough.]
 
 ---
 
@@ -145,129 +145,106 @@ Document your development process with **minimum 3 entries** showing progression
 
 ### Critical Section #1: Counter Variables
 
-**Which variables**: 
+**Which variables**:  contextSwitchCount, completedProcessCount, totalWaitingTime  
 
-**Why they need protection**: 
+Why they need protection: Multiple threads may update values simultaneously causing wrong totals.
 
-**Synchronization mechanism used**: 
+Synchronization mechanism used: ReentrantLock
 
-**Code snippet**:
-```java
-// Paste your implementation here
-```
+Justification: Ensures one thread updates counters at a time.
 
-**Justification**: 
+Critical Section #2
 
----
+What resource: executionLog
 
-### Critical Section #2: Execution Log
+Why it needs protection: Multiple threads writing together may corrupt ArrayList.
 
-**What resource**: 
+Synchronization mechanism used: ReentrantLock
 
-**Why it needs protection**: 
+Justification: Prevents concurrent modifications.
 
-**Synchronization mechanism used**: 
+Critical Section #3
 
-**Code snippet**:
-```java
-// Paste your implementation here
-```
+Purpose of semaphore: Control CPU access.
 
-**Justification**: 
+Number of permits and why: 1 permit because only one process should run.
 
----
+Where implemented: Inside run() method.
 
-### Critical Section #3: CPU Semaphore
-
-**Purpose of semaphore**: 
-
-**Number of permits and why**: 
-
-**Where implemented**: 
-
-**Code snippet**:
-```java
-// Paste your implementation here
-```
-
-**Effect on program behavior**: 
-
+Effect on program behavior: Simulates one CPU process at a time.
 ---
 
 ## Part 4: Testing and Verification (2 marks)
+Test 1 Results:
 
-### Test 1: Consistency Check
-**What I tested**: Running program multiple times to verify consistent results
+Program produced stable outputs across runs.
 
-**Testing procedure**: 
-```bash
-# Commands used (run the program at least 5 times)
-```
+Why synchronization is necessary:
 
-**Results**: 
-(Show that running multiple times produces consistent, correct results)
+Without locks, counters may be incorrect and logs may fail.
 
-**Why synchronization is necessary**: 
-(Explain what race conditions COULD occur without synchronization, even if you didn't observe them. Explain which shared resources need protection and why.)
+Conclusion:
 
-**Conclusion**: 
+Synchronization improved correctness.
 
----
+Test 2 Testing procedure:
 
-### Test 2: Exception Testing
-**What I tested**: Checking for ConcurrentModificationException
+Ran program multiple times.
 
-**Testing procedure**: 
+Results:
 
-**Results**: 
+No ConcurrentModificationException.
 
-**What this proves**: 
+What this proves:
 
----
+Log protection works.
 
-### Test 3: Correctness Verification
-**What I tested**: Verifying correct final values (total burst time, context switches, etc.)
+Test 3 Expected values:
 
-**Expected values**: 
+Completed processes should equal created processes.
 
-**Actual values**: 
+Actual values:
 
-**Analysis**: 
+Values matched.
 
----
+Analysis:
 
-### Test 4: Different Scenarios
-**Scenario tested**: [e.g., different time quantum, more processes, etc.]
+Program worked correctly.
 
-**Purpose**: 
+Test 4 Scenario tested:
 
-**Results**: 
+Different random generated processes.
 
-**What I learned**: 
+Purpose:
 
+Check stability.
+
+Results:
+
+Program completed normally.
+
+What I learned:
+
+Synchronization works in different scenarios.
 ---
 
 ## Part 5: Reflection and Learning
 
 ### What I learned about synchronization:
 
-[6-8 sentences about key concepts, challenges, insights]
+[I learned synchronization protects shared resources. Locks prevent race conditions. Semaphores limit access to resources. try-finally helps release locks safely. Thread safety is important in Java. Shared data must be controlled carefully.
 
----
+**Example 1**: Banking systems  
 
-### Real-world applications:
+**Example 2**: Printer queues]
 
-Give TWO examples where synchronization is critical:
 
-**Example 1**: 
-
-**Example 2**: 
 
 ---
 
 ### How I would explain synchronization to others:
 
-[Explain to someone who just finished Assignment 1 - use simple terms and analogies]
+[Synchronization is like giving one key to one room. Only one person can enter at a time to avoid problems.]
 
 ---
 
@@ -275,13 +252,16 @@ Give TWO examples where synchronization is critical:
 
 **Repository URL**: 
 
-**Number of commits**: 
+**Number of commits**: 4
 
 **Commit messages**: 
-1. 
-2. 
-3. 
-4. 
+1. Set student ID
+
+2. Add locks
+
+3. Add semaphore
+
+4. Complete documentation 
 
 ---
 
